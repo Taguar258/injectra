@@ -1,5 +1,5 @@
 # Injectra
-A tool to inject bash code into mac OSX applications.
+Injectra injects bash code into mac OSX applications.
 
 ## Installation
 Install git and python3:
