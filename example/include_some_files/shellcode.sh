@@ -1,1 +1,1 @@
-./sendnoodle
+./sendnoodle.sh
