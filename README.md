@@ -11,3 +11,10 @@ Run the following command to download injectra:
 ```git clone https://github.com/Taguar258/injectra ; cd injectra ; python3 injectra.py -h```
 
 ![render1585080763770](https://user-images.githubusercontent.com/36562445/77473525-e7c46d80-6e15-11ea-8fe8-235df7a24bb0.gif)
+
+## Include argument
+To include files, you will need to make a folder and move all the files you would like to include into this new created folder.
+
+The argument ```--include```will accept the folder and include all files inside into the application.
+
+In your injection script you will be able to call those files from your current directory.
