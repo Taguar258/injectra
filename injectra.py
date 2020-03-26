@@ -160,7 +160,7 @@ if includer:
 if includer:
 	print("[i] Make included files executable...")
 	try:
-		subprocess.call(("chmod +x ."), shell=True)
+		subprocess.call(("chmod +x *"), shell=True)
 	except:
 		print(C_BRed + "[!] Cannot make other files executable." + C_None)
 		quit()
