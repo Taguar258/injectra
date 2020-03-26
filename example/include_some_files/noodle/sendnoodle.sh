@@ -1,1 +1,1 @@
-mkdir /home/noodle
+open noodle -a TextEdit
