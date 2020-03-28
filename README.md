@@ -12,6 +12,8 @@ Run the following command to download injectra:
 
 ![render1585080763770](https://user-images.githubusercontent.com/36562445/77473525-e7c46d80-6e15-11ea-8fe8-235df7a24bb0.gif)
 
+Preview version 1.0. | Current verion 1.2.
+
 ## Include argument
 To include files, you will need to make a folder and move all the files you would like to include into this new created folder.
 
