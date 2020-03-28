@@ -22,4 +22,4 @@ In your injection script you will be able to call those files from your current 
 ## Example
 Try the following:
 
-```python3 injectra.py -a [app_path] -i example/include_some_files/shellcode.sh -in example/include_some_files/noodle/ -o INJECTEDAPP.app```
+```python3 injectra.py -i example/include_some_files/shellcode.sh -in example/include_some_files/noodle/ -o INJECTEDAPP.app -a [app_path]```
