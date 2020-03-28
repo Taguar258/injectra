@@ -18,3 +18,8 @@ To include files, you will need to make a folder and move all the files you woul
 The argument ```--include```will accept the folder and include all files inside into the application.
 
 In your injection script you will be able to call those files from your current directory.
+
+## Example
+Try the following:
+
+```python3 injectra.py -a [app_path] -i example/include_some_files/shellcode.sh -in example/include_some_files/noodle/ -o INJECTEDAPP.app```
