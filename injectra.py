@@ -25,17 +25,22 @@ C_BBlue = "\x1b[1;34m"
 
 #print(sys.argv)
 
-if '-r' not in sys.argv and '--reset' not in sys.argv:
+if '-r' in sys.argv or '--reset' in sys.argv:
 	parser = argparse.ArgumentParser()
+	parser.add_argument('-r', '--reset', required=False, help='Remove the injection of an application', action='store_true')
+	parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='OSX target application')
+elif '-c' in sys.argv or '--check' in sys.argv:
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-c', '--check', required=False, help='Check if application was injected by injectra', action='store_true')
+	parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='OSX target application')
+else:
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-c', '--check', required=False, help='Check if application was injected by injectra', action='store_true')
 	parser.add_argument('-r', '--reset', required=False, help='Remove the injection of an application', action='store_true')
 	parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='OSX target application')
 	parser.add_argument('-i', '--inject', type=str, nargs=1, required=True, help='Bash script to inject')
 	parser.add_argument('-o', '--output', type=str, nargs=1, required=True, help='Output for the new application')
 	parser.add_argument('-in', '--include', type=str, nargs=1, required=False, help='Inject other files into application')
-else:
-	parser = argparse.ArgumentParser()
-	parser.add_argument('-r', '--reset', required=False, help='Remove the injection of an application', action='store_true')
-	parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='OSX target application')
 
 def banner():
 	bannertxt = """ 
@@ -81,6 +86,46 @@ try:
 except:
 	print(C_BRed + "[!] Cannot get full path of application." + C_None)
 	quit()
+
+try:
+	if args.check:
+		pass
+except:
+	args.check = False
+
+
+if args.check:
+	print("[i] Searching for application.")
+	if path.isdir(args.app[0]):
+		print("[+] Found application: %s" % args.app[0])
+	else:
+		print(C_BRed + "[!] Cannot find application." + C_None)
+		quit()
+	print("[i] Determin application name.")
+	if args.app[0][-1:] == "/":
+		appname = get_app_name(args.app[0][:len(args.app[0]) - 1], args.app[0])
+	else:
+		appname = get_app_name(args.app[0], args.app[0])
+	print("[+] Application name sucessfully analyzed: %s" % appname)
+	try:
+		os.chdir("MacOS/")
+	except:
+		print(C_BRed + "[!] Cannot access applications main file." + C_None)
+		quit()
+	print("[i] Checking if application was injected by Injectra.")
+	print("")
+	if path.isfile(path.abspath(os.getcwd()) + "/" + "injectra"):
+		print("[!] Injection was found.")
+	else:
+		print("[!] Application was not injected by injectra.")
+		quit()
+	quit()
+
+try:
+	if args.reset:
+		pass
+except:
+	args.reset = False
 
 if args.reset:
 	print("[i] Searching for application.")
