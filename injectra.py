@@ -100,6 +100,12 @@ if args.reset:
 	except:
 		print(C_BRed + "[!] Cannot access applications main file." + C_None)
 		quit()
+	print("[i] Checking if application was injected by Injectra.")
+	if path.isfile(path.abspath(os.getcwd()) + "/" + "injectra"):
+		print("[i] Injection was found.")
+	else:
+		print(C_BRed + "[!] Application was not injected by injectra." + C_None)
+		quit()
 	print("[i] Change start order.")
 	try:
 		print("[i] Please select yes.")
