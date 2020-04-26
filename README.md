@@ -25,3 +25,5 @@ In your injection script you will be able to call those files from your current 
 Try the following:
 
 ```python3 injectra.py -i example/include_some_files/shellcode.sh -in example/include_some_files/noodle/ -o INJECTEDAPP.app -a [app_path]```
+
+<a href="https://github.com/Taguar258/injectra/projects/1">Project status/ToDo</a>
