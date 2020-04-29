@@ -1,4 +1,4 @@
-# Injectra
+# Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"><img src="https://img.shields.io/badge/Version-1.3-red"><img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
 Injectra injects bash code into mac OSX applications.
 
 ## Installation
