@@ -1,8 +1,6 @@
 # Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"><img src="https://img.shields.io/badge/Version-1.3-red"><img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
 Injectra injects bash code into mac OSX applications.
 
-I archived this repository, because I am not using OSX anymore.
-
 ## Installation
 Install git and python3:
 
