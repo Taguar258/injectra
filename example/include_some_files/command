@@ -1,1 +1,1 @@
-python3 injectra.py -a input.app -i shellcode.sh -in noodle/ -o output.app
+python3 injectra.py -a input.app -i shellcode.sh -in injection/ -o output.app
