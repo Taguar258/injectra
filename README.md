@@ -1,4 +1,5 @@
-# Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"><img src="https://img.shields.io/badge/Version-2.0-red"><img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
+# Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"> <img src="https://img.shields.io/badge/Version-2.0-red"> <img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
+
 Injectra injects shellcode payloads into mac OSX applications.
 
 
@@ -14,7 +15,7 @@ This payload will then call your payload while the application is running.
 
 **The application is not able to detect the injection because the injection is called before the actual application.**
 
-_The injection method includes in injectra was fully developed by Taguar258._
+_The injection method included in injectra and the idea itself was fully developed by Taguar258._
 
 ## Installation
 To use injectra you will need to install python3 and preferably git:
