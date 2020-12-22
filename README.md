@@ -1,5 +1,10 @@
-# Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"><img src="https://img.shields.io/badge/Version-2-red"><img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
+# Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"><img src="https://img.shields.io/badge/Version-2.0-red"><img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
 Injectra injects shell code into mac OSX applications.
+
+
+![render1585080763770](https://user-images.githubusercontent.com/36562445/77473525-e7c46d80-6e15-11ea-8fe8-235df7a24bb0.gif)
+
+_Preview version 1.0. | Current verion 2.0._
 
 
 ## Installation
@@ -12,10 +17,6 @@ _You can download it using your package manager or just install it manually._
 Run the following command to download injectra or download the zip file from the release page:
 
 ```git clone https://github.com/Taguar258/injectra ; cd injectra ; python3 injectra.py -h```
-
-![render1585080763770](https://user-images.githubusercontent.com/36562445/77473525-e7c46d80-6e15-11ea-8fe8-235df7a24bb0.gif)
-
-Preview version 1.0. | Current verion 2.
 
 <a href="https://github.com/Taguar258/injectra/projects/1">Project status/ToDo</a>
 
