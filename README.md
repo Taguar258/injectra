@@ -18,7 +18,7 @@ This payload will then call your payload while the application is running.
 _The injection method included in injectra and the idea itself was fully developed by Taguar258._
 
 ## Installation
-To use injectra you will need to install python3 and preferably git:
+To use injectra you will need to have some knowledge with your systems terminal and you also need to install python3 and preferably git:
 
 ```apt/pacman/brew/... install git python3```
 
