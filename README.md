@@ -8,15 +8,6 @@ Injectra injects shellcode payloads into mac OSX applications.
 _Preview version 1.0. | Current verion 2.0._
 
 
-## How it works
-MacOS applications are called from an included file which can be easily replaced with the payload of injectra.
-
-This payload will then call your payload while the application is running.
-
-**The application is not able to detect the injection because the injection is called before the actual application.**
-
-_The injection method included in injectra and the idea itself was fully developed by Taguar258._
-
 ## Installation
 To use injectra you will need to have some knowledge with your systems terminal and you also need to install python3 and preferably git:
 
@@ -29,6 +20,15 @@ Run the following command to download injectra or download the zip file from the
 ```git clone https://github.com/Taguar258/injectra ; cd injectra ; python3 injectra.py -h```
 
 <a href="https://github.com/Taguar258/injectra/projects/1">Project status/ToDo</a>
+
+## How it works
+MacOS applications are called from an included file which can be easily replaced with the payload of injectra.
+
+This payload will then call your payload while the application is running.
+
+**The application is not able to detect the injection because the injection is called before the actual application.**
+
+_The injection method included in injectra and the idea itself was fully developed by Taguar258._
 
 ## Include argument
 To include files, you will need to make a folder and move all the files you would like to include into this new created folder.
