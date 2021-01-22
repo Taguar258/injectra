@@ -17,6 +17,10 @@ To execute it just run:
 
 ```injectra -h```
 
+Uninstall using the following:
+
+```sudo pip3 uninstall injectra```
+
 <a href="https://github.com/Taguar258/injectra/projects/1">Project status/ToDo</a>
 
 ## How it works
