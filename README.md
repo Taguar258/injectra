@@ -9,15 +9,13 @@ _Preview version 1.0. | Current verion 2.0._
 
 
 ## Installation
-To use injectra you will need to have some knowledge with your systems terminal and you also need to install python3 and preferably git:
+To use injectra you will need to install python3 and run the following command:
 
-```apt/pacman/brew/... install git python3```
+```sudo pip3 install git+https://github.com/Taguar258/injectra```
 
-_You can download it using your package manager or just install it manually._
+To execute it just run:
 
-Run the following command to download injectra or download the zip file from the release page:
-
-```git clone https://github.com/Taguar258/injectra ; cd injectra ; python3 injectra.py -h```
+```injectra -h```
 
 <a href="https://github.com/Taguar258/injectra/projects/1">Project status/ToDo</a>
 
