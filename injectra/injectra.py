@@ -6,9 +6,13 @@ import subprocess
 import sys
 from os import path
 
-from .src.check import check_for_injection
-from .src.inject import inject_app
-from .src.remove_injection import remove_injection
+# TODO
+# from .src.check import check_for_app_injection
+# from .src.inject import inject_app
+# from .src.remove_injection import remove_app_injection
+from src.check import check_for_app_injection
+from src.inject import inject_app
+from src.remove_injection import remove_app_injection
 
 
 class Main:
@@ -33,6 +37,7 @@ class Main:
         # self.C_BMagenta = "\x1b[1;35m"
 
         self.mode = None
+        self.target_mode = None
         self.include_files = False
 
     def parse_args(self):
@@ -40,20 +45,23 @@ class Main:
         if '-r' in sys.argv or '--reset' in sys.argv:
             self.parser = argparse.ArgumentParser()
             self.parser.add_argument('-r', '--reset', required=False, help='Remove the injection from an infected application', action='store_true')
-            self.parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='Target OSX application')
+            self.parser.add_argument('-a', '--app', type=str, nargs=1, required=False, help='Target OSX application')
+            self.parser.add_argument('-p', '--pkg', type=str, nargs=1, required=False, help='Target package')
             self.mode = "Reset"
 
         elif '-c' in sys.argv or '--check' in sys.argv:
             self.parser = argparse.ArgumentParser()
             self.parser.add_argument('-c', '--check', required=False, help='Check if application was injected by injectra', action='store_true')
-            self.parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='Target OSX application')
+            self.parser.add_argument('-a', '--app', type=str, nargs=1, required=False, help='Target OSX application')
+            self.parser.add_argument('-p', '--pkg', type=str, nargs=1, required=False, help='Target package')
             self.mode = "Check"
 
         else:
             self.parser = argparse.ArgumentParser()
             self.parser.add_argument('-c', '--check', required=False, help='Check if application was injected by injectra', action='store_true')
             self.parser.add_argument('-r', '--reset', required=False, help='Remove the injection of an application', action='store_true')
-            self.parser.add_argument('-a', '--app', type=str, nargs=1, required=True, help='Target OSX application')
+            self.parser.add_argument('-a', '--app', type=str, nargs=1, required=False, help='Target OSX application')
+            self.parser.add_argument('-p', '--pkg', type=str, nargs=1, required=False, help='Target package')
             self.parser.add_argument('-i', '--inject', type=str, nargs=1, required=True, help='Bash/Shell script to inject')
             self.parser.add_argument('-o', '--output', type=str, nargs=1, required=True, help='Output for the infected application')
             self.parser.add_argument('-in', '--include', type=str, nargs=1, required=False, help='Add files of a given folder to the application')
@@ -85,47 +93,84 @@ class Main:
 
     def get_abs_path(self):
 
+        calc_check = 0
+        if self.args.app is not None: calc_check += 1
+        if self.args.pkg is not None: calc_check += 1
+
+        if calc_check == 0:
+            print(self.C_BRed + "[!] Missing target argument." + self.C_None)
+            print(self.C_BRed + "[!] Please provide the app or pkg argument." + self.C_None)
+            quit()
+
+        elif calc_check == 2:
+            print(self.C_BRed + "[!] Recived two target arguments where as only one is needed." + self.C_None)
+            print(self.C_BRed + "[!] Please provide only the app or pkg argument." + self.C_None)
+            quit()
+
+        try:
+
+            self.args.inject[0] = path.abspath(self.args.inject[0])
+            self.args.output[0] = path.abspath(self.args.output[0])
+
+            if self.args.app is not None:
+                self.args.app[0] = path.abspath(self.args.app[0])
+                self.target_mode = "app"
+
+            elif self.args.pkg is not None:
+                self.args.pkg[0] = path.abspath(self.args.pkg[0])
+                self.target_mode = "pkg"
+
+        except Exception:
+
+            print(self.C_BRed + "[!] Cannot get the full path of a given argument." + self.C_None)
+            quit()
+
+        # if self.args.app is not None:
+        #     self.mode
+        # if self.args.pkg is not None:
+
         try:
             self.args.app[0] = path.abspath(self.args.app[0])
         except Exception:
-            print(self.C_BRed + "[!] Cannot get the full path of the given application." + self.C_None)
+            print(self.C_BRed + "[!] Cannot get the full path of the {} argument." + self.C_None)
             quit()
 
         if self.mode == "Inject":
 
             try:
-                self.args.inject[0] = path.abspath(self.args.inject[0])
-                self.args.output[0] = path.abspath(self.args.output[0])
 
-                try:
+                if self.args.include[0] != "":
 
-                    if self.args.include[0] != "":
+                    self.args.include[0] = path.abspath(self.args.include[0])
 
-                        self.args.include[0] = path.abspath(self.args.include[0])
+                    if self.args.include[0][-1:] == "/":
 
-                        if self.args.include[0][-1:] == "/":
+                        self.args.include[0] = self.args.include[0][-1:]
 
-                            self.args.include[0] = self.args.include[0][-1:]
-
-                        self.include_files = True
-
-                except Exception:
-                    pass
+                    self.include_files = True
 
             except Exception:
-                print(self.C_BRed + "[!] Cannot get the full path of the given files." + self.C_None)
-                quit()
+                pass
 
     def main_logic(self):
 
-        if self.mode == "Reset":
-            remove_injection(self.args)
+        if self.mode == "Reset" and self.target_mode == "app":
+            remove_app_injection(self.args)
 
-        elif self.mode == "Check":
-            check_for_injection(self.args)
+        elif self.mode == "Reset" and self.target_mode == "pkg":
+            remove_pkg_injection(self.args)
 
-        elif self.mode == "Inject":
+        elif self.mode == "Check" and self.target_mode == "app":
+            check_for_app_injection(self.args)
+
+        elif self.mode == "Check" and self.target_mode == "pkg":
+            check_for_pkg_injection(self.args)
+
+        elif self.mode == "Inject" and self.target_mode == "app":
             inject_app(self.args, self.include_files)
+
+        elif self.mode == "Inject" and self.target_mode == "pkg":
+            inject_pkg(self.args, self.include_files)
 
     def run(self):
 

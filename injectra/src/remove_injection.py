@@ -8,7 +8,7 @@ C_None = "\x1b[0;39m"
 C_BRed = "\x1b[1;31m"
 
 
-def remove_injection(args):
+def remove_app_injection(args):
 
     # 1 | Check for valid folder
     check_app_path(args)

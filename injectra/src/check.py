@@ -2,7 +2,7 @@ from .get_app import get_app_name
 from .logic import check_app_path, check_injection
 
 
-def check_for_injection(args):
+def check_for_app_injection(args):
 
     # 1 | Check for valid folder
     check_app_path(args)

