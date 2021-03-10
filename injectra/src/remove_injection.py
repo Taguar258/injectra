@@ -25,19 +25,20 @@ def remove_injection(args):
     try:
         print("[i] Please enter yes twice.")
 
-        call(("rm -i '%s'" % appname), shell=True)
-        call(("rm -i 'payload'"), shell=True)
+        call(f"rm -i '{appname}'", shell=True)
+        call("rm -i 'payload'", shell=True)
 
         if path.isfile(path.abspath(getcwd()) + "/" + appname):
             print(C_BRed + "[!] Cannot continue without your permission." + C_None)
 
             raise Exception("Permission denied")
 
-        call(("mv 'injectra' '%s'" % appname), shell=True)
+        call(f"mv 'injectra' '{appname}'", shell=True)
 
         print("[+] The operation was sucessful.")
         quit()
 
     except Exception:
+
         print(C_BRed + "[!] Cannot remove the injection." + C_None)
         quit()

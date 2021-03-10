@@ -5,24 +5,33 @@ C_BRed = "\x1b[1;31m"
 
 
 def check_app_path(args):
+
     print("[i] Checking application path.")
 
     if path.isdir(args.app[0]):
-        print("[+] Found the application: %s" % args.app[0])
+
+        print(f"[+] Found the application: {args.app[0]}")
+
     else:
+
         print(C_BRed + "[!] Cannot find the application." + C_None)
         quit()
 
 
 def check_injection(verbose_mode=False):
+
     try:
+
         chdir("MacOS/")
+
     except Exception:
+
         print(C_BRed + "[!] Cannot access applications main file." + C_None)
         quit()
 
     if verbose_mode:
         print("[i] Checking if application was injected by Injectra.\n")
+
     else:
         print("[i] Checking if application was injected by Injectra.")
 
@@ -38,18 +47,22 @@ def check_injection(verbose_mode=False):
             print("[i] An injection was found.")
 
     else:
+
         if verbose_mode:
             print("[!] The application was not injected by injectra.")
+
         else:
             print(C_BRed + "[!] The application was not injected by injectra." + C_None)
             quit()
 
 
 def check_inputs(args):
+
     print("[i] Checking the script.")
 
     if path.isfile(args.inject[0]):
-        print("[+] Found the script: %s" % args.inject[0])
+        print(f"[+] Found the script: {args.inject[0]}")
+
     else:
         print(C_BRed + "[!] Cannot find the script." + C_None)
         quit()
@@ -58,12 +71,14 @@ def check_inputs(args):
 
     if access(args.inject[0], R_OK):
         print("[+] Script is readable.")
+
     else:
         print(C_BRed + "[!] Cannot read script." + C_None)
         quit()
 
     print("[i] Check if output path is writable.")
     try:
+
         output = args.output[0].split("/")
         output1 = "/".join(output[: len(output) - 1])
         output2 = "." + ("/".join(output[-1:]))
@@ -74,7 +89,8 @@ def check_inputs(args):
         output = output1 + output2
 
     except Exception:
-        print(C_BRed + ("[!] Cannot get output path: %s" % output) + C_None)
+
+        print(C_BRed + f"[!] Cannot get output path: {output}" + C_None)
         quit()
 
     return output

