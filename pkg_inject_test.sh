@@ -21,3 +21,6 @@ echo "#!/bin/bash\nmkdir /Users/taguar/Desktop/INJECTION_202" > postinstall
 cd ../../
 
 pkgutil --flatten . out.pkg
+
+
+# https://krypted.com/mac-os-x/inspecting-creating-mac-installer-packages-linux/

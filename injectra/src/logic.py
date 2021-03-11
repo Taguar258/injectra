@@ -18,6 +18,20 @@ def check_app_path(args):
         quit()
 
 
+def check_pkg_path(args):
+
+    print("[i] Checking package path.")
+
+    if path.isfile(args.pkg[0]):
+
+        print(f"[+] Found the package: {args.pkg[0]}")
+
+    else:
+
+        print(C_BRed + "[!] Cannot find the package." + C_None)
+        quit()
+
+
 def check_injection(verbose_mode=False):
 
     try:
