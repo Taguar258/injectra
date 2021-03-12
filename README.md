@@ -3,7 +3,7 @@
 Injectra injects shellcode payloads into MacOS applications and package installers.
 
 
-MEDIA
+<!--MEDIA-->
 
 
 ## Installation 

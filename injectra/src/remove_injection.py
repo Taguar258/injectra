@@ -102,6 +102,8 @@ def remove_pkg_injection(args):
 
             injected_pkgs.append(".")
 
+        chdir("../")
+
     else:
 
         for pkg in injectable_pkgs:
@@ -171,12 +173,13 @@ def remove_pkg_injection(args):
         print("Please answer with yes...")
         call(f"rm -i {args.pkg[0]}")
 
-        call(f"pkgutil --flatten . '{args.pkg[0]}'", shell=True)
+        call(f"pkgutil --flatten . {args.pkg[0]}", shell=True)
 
-    except Exception:
+    except Exception as e:
 
         print(C_BRed + "[!] Could not repack the package." + C_None)
         print("[i] Make sure pkgutil is available.")
+        print(e)
         quit()
 
     # 7 | Cleaning up
@@ -190,7 +193,5 @@ def remove_pkg_injection(args):
 
         print(C_BRed + "[!] Could not clean up." + C_None)
         quit()
-
-    # TODO RECOMPILE PACKAGE
 
     print("[i] Removed the injections.")
