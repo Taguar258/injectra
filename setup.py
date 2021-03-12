@@ -9,11 +9,11 @@ def read(fname):
 
 setup(
     name="injectra",
-    description="Injectra injects shellcode payloads into mac OSX applications.",
+    description="Injectra injects shellcode payloads into MacOS applications and package installers.",
     long_description=read("README.md"),
     author="Taguar258",
     license="MIT",
-    version="2.0",
+    version="3.0",
     keywords="macos osx backdoor virus injection trojan rat injector payload",
     url="https://github.com/Taguar258/injectra",
     entry_points={"console_scripts": ["injectra = injectra.injectra:exec_main"]},

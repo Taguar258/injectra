@@ -1,45 +1,71 @@
-# Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"> <img src="https://img.shields.io/badge/Version-2.0-red"> <img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
+# Injectra<br><img src="https://img.shields.io/badge/Language-Python3-blue"> <img src="https://img.shields.io/badge/Version-3.0-red"> <img src="https://img.shields.io/badge/Licence-MIT-yellowgreen">
 
-Injectra injects shellcode payloads into mac OSX applications.
-
-
-![render1585080763770](https://user-images.githubusercontent.com/36562445/77473525-e7c46d80-6e15-11ea-8fe8-235df7a24bb0.gif)
-
-_Preview version 1.0. | Current verion 2.0._
+Injectra injects shellcode payloads into MacOS applications and package installers.
 
 
-## Installation
-To use injectra you will need to install python3 and run the following command:
+MEDIA
 
-```sudo pip3 install git+https://github.com/Taguar258/injectra```
 
-To execute it just run:
+## Installation 
 
-```injectra -h```
+Due to the installation using setuptools the only requirement is python3 with pip installed.
 
-Uninstall using the following:
+Installation:
 
-```sudo pip3 uninstall injectra```
+`pip3 install git+https://github.com/Taguar258/injectra`
 
-<a href="https://github.com/Taguar258/injectra/projects/1">Project status/ToDo</a>
+Execution:
 
-## How it works
-MacOS applications are called from an included file which can be easily replaced with the payload of injectra.
+`injectra -h`
 
-This payload will then call your payload while the application is running.
+Uninstallation:
 
-**The application is not able to detect the injection because the injection is called before the actual application.**
+`pip3 uninstall injectra`
 
-_The injection method included in injectra and the idea itself was fully developed by Taguar258._
+_Tested on MacOS._
 
-## Include argument
-To include files, you will need to make a folder and move all the files you would like to include into this new created folder.
+## Instructions
 
-The argument ```--include``` will accept the folder and include all files inside of it.
+Injectra has three working modes: Injection, Removal, and Detection. All those modes can be applied to packages as well as applications.
 
-In your injection script you will be able to call those files from your current working directory.
+### Injection
 
-## Example
-As an example you can inject an application using the following arguments:
+A simple injection of an application would look like this:
 
-```python3 injectra.py -i example/include_some_files/shellcode.sh -in example/include_some_files/injection/ -o INJECTEDAPP.app -a [app_path]```
+`injectra -a INPUT_APP.app -i PAYLOAD.sh -o OUTPUT.app`
+
+The `-a` argument inputs an application whereas this can be replaced with `-p` which stands for package:
+
+`injectra -a INPUT_PKG.pkg -i PAYLOAD.sh -o OUTPUT.pkg`
+
+The `-i` argument injects the given shell payload and `-o` defines an output location.
+
+In case you would like to include files to the directory of the payload you can use the `-in` argument. The `-in` argument accepts a folder with all the files in it you would like to add. You can then call all the injected files from you current working directory of the payload.
+
+### Detection
+
+You can easily identify injections via injectra using:
+
+`injectra -c -a INPUT.app`
+
+Whereas `-c` stands for _check_. The application argument (`-a`) can be replaced with `-p` for packages as well.
+
+### Removal
+
+Injections can be removed by applying the `-r` argument (stands for _remove_):
+
+`injectra -r -p INPUT.pkg`
+
+You can also replace `-p` with `-a` for application.
+
+This will remove the injection from the given input.
+
+## Explanation
+
+MacOS applications, as well as pkg installers, contain executables that are executed by a parent process. Injectra renames those executables so that a parent payload can be injected which calls your payload before starting the actual process.
+
+There are some application which will not work yet though will work in feature updates. An example of such applications is the applications provided by MacOS itself. All other tested applications worked fine.
+
+The injection of a package installer can escalate the payloads permissions due to the privilege escalation of the installer itself.
+
+The injection method provided by Injectra was fully developed and discovered by Taguar258.
