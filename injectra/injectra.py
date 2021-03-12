@@ -6,13 +6,9 @@ import subprocess
 import sys
 from os import path
 
-# TODO
-# from .src.check import check_for_app_injection
-# from .src.inject import inject_app
-# from .src.remove_injection import remove_app_injection
-from src.check import check_for_app_injection, check_for_pkg_injection
-from src.inject import inject_app, inject_pkg
-from src.remove_injection import remove_app_injection, remove_pkg_injection
+from .src.check import check_for_app_injection, check_for_pkg_injection
+from .src.inject import inject_app, inject_pkg
+from .src.remove_injection import remove_app_injection, remove_pkg_injection
 
 
 class Main:
