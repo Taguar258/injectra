@@ -1,4 +1,5 @@
-from os import R_OK, access, chdir, getcwd, path
+from os import R_OK, access, chdir, getcwd, makedirs, path
+from subprocess import call
 
 C_None = "\x1b[0;39m"
 C_BRed = "\x1b[1;31m"
@@ -108,3 +109,50 @@ def check_inputs(args):
         quit()
 
     return output
+
+
+def check_pkg_injection(args):
+
+    # 1 | Extract scripts
+    extracting_scripts()
+
+    # 2 | Removing injection
+    print("[i] Looking for injection.")
+
+    if path.isfile("./injectra"):
+
+        return True
+
+    else:
+
+        return False
+
+
+def extracting_scripts():
+
+    print("[i] Setting up extraction environment.")
+
+    try:
+
+        call("mv Scripts Scripts.tmp", shell=True)
+
+        makedirs("Scripts")
+        chdir("Scripts")
+
+    except Exception:
+
+        print(C_BRed + "[!] Could not create extraction environment." + C_None)
+        quit()
+
+    print("[i] Extracting scripts...")
+
+    try:
+
+        call("cpio -i -F ../Scripts.tmp", shell=True)
+        call("rm ../Scripts.tmp", shell=True)
+
+    except Exception:
+
+        print(C_BRed + "[!] Could not extract Scripts." + C_None)
+        print("[i] Make sure cpio is available.")
+        quit()

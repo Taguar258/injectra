@@ -125,16 +125,6 @@ class Main:
             print(self.C_BRed + "[!] Cannot get the full path of a given argument." + self.C_None)
             quit()
 
-        # if self.args.app is not None:
-        #     self.mode
-        # if self.args.pkg is not None:
-
-        try:
-            self.args.app[0] = path.abspath(self.args.app[0])
-        except Exception:
-            print(self.C_BRed + "[!] Cannot get the full path of the {} argument." + self.C_None)
-            quit()
-
         if self.mode == "Inject":
 
             try:
