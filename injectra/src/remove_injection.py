@@ -171,15 +171,14 @@ def remove_pkg_injection(args):
     try:
 
         print("Please answer with yes...")
-        call(f"rm -i {args.pkg[0]}")
+        call(f"rm {args.pkg[0]}")
 
         call(f"pkgutil --flatten . {args.pkg[0]}", shell=True)
 
-    except Exception as e:
+    except Exception:
 
         print(C_BRed + "[!] Could not repack the package." + C_None)
         print("[i] Make sure pkgutil is available.")
-        print(e)
         quit()
 
     # 7 | Cleaning up
