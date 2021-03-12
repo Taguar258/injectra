@@ -111,7 +111,7 @@ def check_inputs(args):
     return output
 
 
-def check_pkg_injection(args):
+def check_pkg_injection():
 
     # 1 | Extract scripts
     extracting_scripts()

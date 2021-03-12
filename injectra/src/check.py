@@ -71,6 +71,7 @@ def check_for_pkg_injection(args):
 
     # 4 | Fetching injectable packages
     print("[i] Fetching injectable packages.")
+    print("")
 
     injectable_pkgs = list(glob("*.pkg"))
 
@@ -104,6 +105,8 @@ def check_for_pkg_injection(args):
 
             print("[i] The package was not injected.")
 
+    print("")
+
     # 10 | Cleaning up
     print("[i] Cleaning up.")
 
@@ -111,8 +114,7 @@ def check_for_pkg_injection(args):
 
     try:
 
-        print("Please answer with yes...")
-        call(f"rm -rI '.tmp_{output}'", shell=True)
+        call(f"rm -rf '.tmp_{output}'", shell=True)
 
     except Exception:
 

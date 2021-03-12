@@ -10,9 +10,9 @@ from os import path
 # from .src.check import check_for_app_injection
 # from .src.inject import inject_app
 # from .src.remove_injection import remove_app_injection
-from src.check import check_for_app_injection
+from src.check import check_for_app_injection, check_for_pkg_injection
 from src.inject import inject_app, inject_pkg
-from src.remove_injection import remove_app_injection
+from src.remove_injection import remove_app_injection, remove_pkg_injection
 
 
 class Main:
@@ -109,8 +109,20 @@ class Main:
 
         try:
 
-            self.args.inject[0] = path.abspath(self.args.inject[0])
-            self.args.output[0] = path.abspath(self.args.output[0])
+            if self.mode == "Inject":
+
+                if not self.args.output[0].endswith(".app"):
+
+                    if self.args.app is not None:
+
+                        self.args.output[0] = self.args.output[0] + ".app"
+
+                    elif self.args.pkg is not None:
+
+                        self.args.output[0] = self.args.output[0] + ".pkg"
+
+                self.args.inject[0] = path.abspath(self.args.inject[0])
+                self.args.output[0] = path.abspath(self.args.output[0])
 
             if self.args.app is not None:
                 self.args.app[0] = path.abspath(self.args.app[0])
@@ -120,9 +132,10 @@ class Main:
                 self.args.pkg[0] = path.abspath(self.args.pkg[0])
                 self.target_mode = "pkg"
 
-        except Exception:
+        except Exception as e:
 
             print(self.C_BRed + "[!] Cannot get the full path of a given argument." + self.C_None)
+            print(e)
             quit()
 
         if self.mode == "Inject":

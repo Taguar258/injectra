@@ -10,7 +10,7 @@ C_None = "\x1b[0;39m"
 C_BRed = "\x1b[1;31m"
 
 
-def include_files(args):
+def include_user_files(args):
 
     print("[i] Including the content of the given folder...")
 
@@ -83,7 +83,7 @@ def inject_app(args, include_files):
     # 5 | Including files
     if include_files:
 
-        include_files(args)
+        include_user_files(args)
 
     # 6 | Changing the start order
     print("[i] Changing the start order...")
@@ -106,7 +106,7 @@ def inject_app(args, include_files):
         print(C_BRed + "[!] Cannot rearrange the start order." + C_None)
         quit()
 
-    try:
+    try:  # TODO: Some applications need their name to be the original to execute
 
         # call(f'echo \'#!/bin/sh\nDIR=$(cd "$(dirname "$0")"; pwd) ; cd $DIR\n$DIR/payload &\n$DIR/injectra &\' > "{appname}"', shell=True)
         injection_handler = open(appname, "w")
@@ -240,7 +240,7 @@ def inject_pkg(args, include_files):
 
     if include_files:
 
-        include_files(args)
+        include_user_files(args)
 
     # 8 | Searching injectable script
     print("[i] Finding script to inject.")
@@ -309,8 +309,7 @@ def inject_pkg(args, include_files):
 
     try:
 
-        print("Please answer with yes...")
-        call(f"rm -rI '.tmp_{output}'", shell=True)
+        call(f"rm -rf '.tmp_{output}'", shell=True)  # -I not working on apple replace in all scripts
 
     except Exception:
 

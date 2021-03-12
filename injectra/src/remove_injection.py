@@ -45,7 +45,7 @@ def remove_app_injection(args):
         quit()
 
 
-def remove_pkg_injection(args):  # TODO
+def remove_pkg_injection(args):
 
     # 1 | Gathering filename
 
@@ -104,17 +104,15 @@ def remove_pkg_injection(args):  # TODO
 
     else:
 
-        status = []
-
         for pkg in injectable_pkgs:
 
             chdir(pkg)
 
             if check_pkg_injection():
 
-                status.append(pkg)
+                injected_pkgs.append(pkg)
 
-            chdir("../")
+            chdir("../../")
 
     # 5 | Removing injection
     print("[i] Removing injections...")
@@ -123,7 +121,7 @@ def remove_pkg_injection(args):  # TODO
 
     for pkg_path in injected_pkgs:
 
-        chdir(pkg_path)
+        chdir(pkg_path + "/Scripts/")
 
         print("[i] Identifing previous state.")
 
@@ -148,6 +146,7 @@ def remove_pkg_injection(args):  # TODO
         else:
 
             print(C_BRed + "[!] Fatal Error, while removing injection." + C_None)
+            quit()
 
         print("[i] Removing an injection.")
 
@@ -162,17 +161,36 @@ def remove_pkg_injection(args):  # TODO
             print(C_BRed + "[!] Could not remove injection." + C_None)
             quit()
 
-    # 10 | Cleaning up
-    print("[i] Cleaning up.")
+        chdir("../../")
+
+    # 6 | Repacking the package
+    print("[i] Repacking the package...")
 
     try:
 
         print("Please answer with yes...")
-        call(f"rm -rI '.tmp_{output}'", shell=True)
+        call(f"rm -i {args.pkg[0]}")
+
+        call(f"pkgutil --flatten . '{args.pkg[0]}'", shell=True)
+
+    except Exception:
+
+        print(C_BRed + "[!] Could not repack the package." + C_None)
+        print("[i] Make sure pkgutil is available.")
+        quit()
+
+    # 7 | Cleaning up
+    print("[i] Cleaning up.")
+
+    try:
+
+        call(f"rm -rf '.tmp_{output}'", shell=True)
 
     except Exception:
 
         print(C_BRed + "[!] Could not clean up." + C_None)
         quit()
+
+    # TODO RECOMPILE PACKAGE
 
     print("[i] Removed the injections.")
