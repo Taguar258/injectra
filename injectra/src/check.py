@@ -71,7 +71,6 @@ def check_for_pkg_injection(args):
 
     # 4 | Fetching injectable packages
     print("[i] Fetching injectable packages.")
-    print("")
 
     injectable_pkgs = list(glob("*.pkg"))
 
