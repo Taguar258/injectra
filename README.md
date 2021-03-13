@@ -12,15 +12,21 @@ Due to the installation using setuptools the only requirement is python3 with pi
 
 Installation:
 
-```pip3 install git+https://github.com/Taguar258/injectra```
+```bash
+pip3 install git+https://github.com/Taguar258/injectra
+```
 
 Execution:
 
-```injectra -h```
+```bash
+injectra -h
+```
 
 Uninstallation:
 
-```pip3 uninstall injectra```
+```bash
+pip3 uninstall injectra
+```
 
 _Tested on MacOS._
 
@@ -32,11 +38,15 @@ Injectra has three working modes: Injection, Removal, and Detection. All those m
 
 A simple injection of an application would look like this:
 
-```injectra -a INPUT_APP.app -i PAYLOAD.sh -o OUTPUT.app```
+```bash
+injectra -a INPUT_APP.app -i PAYLOAD.sh -o OUTPUT.app
+```
 
 The `-a` argument inputs an application whereas this can be replaced with `-p` which stands for package:
 
-```injectra -a INPUT_PKG.pkg -i PAYLOAD.sh -o OUTPUT.pkg```
+```bash
+injectra -a INPUT_PKG.pkg -i PAYLOAD.sh -o OUTPUT.pkg
+```
 
 The `-i` argument injects the given shell payload and `-o` defines an output location.
 
@@ -46,7 +56,9 @@ In case you would like to include files to the directory of the payload you can 
 
 You can easily identify injections via injectra using:
 
-```injectra -c -a INPUT.app```
+```bash
+injectra -c -a INPUT.app
+```
 
 Whereas `-c` stands for _check_. The application argument (`-a`) can be replaced with `-p` for packages as well.
 
@@ -54,7 +66,9 @@ Whereas `-c` stands for _check_. The application argument (`-a`) can be replaced
 
 Injections can be removed by applying the `-r` argument (stands for _remove_):
 
-```injectra -r -p INPUT.pkg```
+```bash
+injectra -r -p INPUT.pkg
+```
 
 You can also replace `-p` with `-a` for application.
 
