@@ -2,6 +2,7 @@
 
 Injectra injects shellcode payloads into MacOS applications and package installers.
 
+Injectra makes so that applications and packages run user-given code on start.
 
 <!--MEDIA-->
 
